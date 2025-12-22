@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대학일자리 진로상담 AI 진단 도구</title>
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-color: #1F2937;
+            --border-color: #D1D5DB;
+            --sub-bg: #F9FAFB;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1.7rem;
+            margin-bottom: 5px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6B7280;
+            font-size: 0.95rem;
+            margin-bottom: 35px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .section:last-child { border-bottom: none; }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #111827;
+        }
+        .section-title::before {
+            content: ''; display: inline-block; width: 6px; height: 20px;
+            background-color: var(--primary-color); margin-right: 12px; border-radius: 3px;
+        }
+
+        .section-title .badge {
+            background-color: #EFF6FF; color: var(--primary-color);
+            font-size: 0.75rem; padding: 2px 8px; border-radius: 12px;
+            margin-left: 8px; border: 1px solid #BFDBFE; font-weight: 600;
+        }
+
+        /* 인풋 공통 */
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%; padding: 12px 16px; border: 1px solid var(--border-color);
+            border-radius: 8px; box-sizing: border-box; font-size: 0.95rem;
+            margin-bottom: 8px; transition: border-color 0.2s;
+            background-color: #fff;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            outline: none; border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        input:disabled {
+            background-color: #F3F4F6;
+            color: #9CA3AF;
+            cursor: not-allowed;
+        }
+
+        /* 인적사항 그리드 */
+        .info-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .info-box {
+            background-color: var(--sub-bg);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #4B5563;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 버튼형 선택지 스타일 (공통) */
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .chip {
+            flex: 1;
+            min-width: 60px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            background: white;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chip:hover { background-color: #EFF6FF; border-color: #93C5FD; }
+        .chip.selected {
+            background-color: #DBEAFE;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: bold;
+            box-shadow: 0 1px 2px rgba(37, 99, 235, 0.1);
+        }
+        .chip input { display: none; }
+
+
+        /* 옵션 카드 (세로형 리스트) */
+        .option-group-vertical { display: flex; flex-direction: column; gap: 8px; }
+        .option-card {
+            display: flex; align-items: center; padding: 12px 16px;
+            border: 1px solid var(--border-color); border-radius: 8px;
+            cursor: pointer; transition: all 0.2s; background: white;
+        }
+        .option-card:hover { background-color: #EFF6FF; border-color: var(--primary-color); }
+        .option-card.selected {
+            background-color: #EFF6FF; border-color: var(--primary-color);
+            font-weight: bold; color: var(--primary-color);
+        }
+        .option-card input { margin-right: 10px; accent-color: var(--primary-color); }
+
+        /* VS 섹션 */
+        .vs-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .vs-text { font-weight: 900; color: #D1D5DB; margin: 0 10px; font-style: italic; font-size: 1.1rem; }
+        .vs-card {
+            flex: 1; padding: 14px; border: 1px solid var(--border-color);
+            border-radius: 8px; cursor: pointer; text-align: center; background: white;
+            font-size: 0.95rem;
+        }
+        .vs-card:hover { background-color: #F9FAFB; }
+        .vs-card.selected {
+            background-color: #EFF6FF; border-color: var(--primary-color);
+            color: var(--primary-color); font-weight: bold;
+        }
+        .vs-card input { display: none; }
+
+        /* 키워드 태그 */
+        .keyword-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .keyword-tag {
+            padding: 8px 16px; background-color: #F3F4F6; border-radius: 20px;
+            cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; transition: all 0.2s;
+        }
+        .keyword-tag:hover { background-color: #E5E7EB; }
+        .keyword-tag.selected {
+            background-color: #DBEAFE; color: var(--primary-color);
+            border-color: var(--primary-color); font-weight: bold;
+        }
+        .keyword-tag input { display: none; }
+
+        /* 슬라이더 */
+        .slider-container { text-align: center; padding: 10px 20px; background: var(--sub-bg); border-radius: 10px; }
+        input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--primary-color); cursor: pointer; }
+        .slider-value { font-weight: 800; color: var(--primary-color); font-size: 1.5rem; }
+
+        /* 버튼 */
+        .submit-btn {
+            width: 100%; padding: 18px; background-color: var(--primary-color); color: white;
+            border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700;
+            cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+            margin-top: 10px;
+        }
+        .submit-btn:hover { background-color: #1D4ED8; transform: translateY(-2px); }
+
+        .notice {
+            font-size: 0.9rem; color: #4B5563; margin-top: 20px; text-align: center;
+            background-color: #F0FDF4; border: 1px solid #BBF7D0; padding: 15px; border-radius: 8px;
+        }
+
+        /* 숨겨진 입력창 */
+        .hidden-input { display: none; margin-top: 10px; padding: 12px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; }
+        
+        /* 체크박스 커스텀 */
+        .checkbox-label {
+            display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; color: #4B5563; margin-top: 5px;
+        }
+        .checkbox-label input { margin-right: 8px; width: auto; }
+
+        /* 모바일 반응형 */
+        @media (max-width: 500px) {
+            .container { padding: 20px; }
+            .chip { min-width: 45px; font-size: 0.8rem; padding: 6px 4px; }
+            .info-label { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>대학일자리 진로상담 AI 진단 도구</h1>
+    <p class="subtitle">학생의 잠재력을 발굴하고, 맞춤형 상담 전략을 수립합니다.</p>
+
+    <div class="section">
+        <div class="section-title">기본 인적 사항</div>
+        
+        <div class="info-grid">
+            <div class="info-box" style="padding-bottom: 5px;">
+                <span class="info-label">🎂 만 나이</span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="number" id="age" placeholder="숫자만 입력 (예: 24)" style="width: 120px; margin-bottom: 10px;">
+                    <span style="font-size: 0.9rem; color: #6B7280; margin-bottom: 10px;">세</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <span class="info-label">🏫 출신 고등학교 유형</span>
+                <div class="chip-group">
+                    <label class="chip" onclick="selectSingle(this, 'highschool')">
+                        <input type="radio" name="highschool" value="인문계고(일반고)">인문계
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'highschool')">
+                        <input type="radio" name="highschool" value="특성화고(실업계)">특성화
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'highschool')">
+                        <input type="radio" name="highschool" value="마이스터고">마이스터
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'highschool')">
+                        <input type="radio" name="highschool" value="특수목적고">특목고
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'highschool')">
+                        <input type="radio" name="highschool" value="검정고시/기타">기타
+                    </label>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <span class="info-label">🎓 대학 학적 상태</span>
+                <div class="chip-group">
+                    <label class="chip selected" onclick="selectSingle(this, 'academic_status')">
+                        <input type="radio" name="academic_status" value="재학" checked>재학
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'academic_status')">
+                        <input type="radio" name="academic_status" value="휴학">휴학
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'academic_status')">
+                        <input type="radio" name="academic_status" value="수료">수료
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'academic_status')">
+                        <input type="radio" name="academic_status" value="졸업유예">유예
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'academic_status')">
+                        <input type="radio" name="academic_status" value="졸업">졸업
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'academic_status')" style="border-color: #9CA3AF; color: #4B5563;">
+                        <input type="radio" name="academic_status" value="해당없음(고졸/고교생)">해당없음
+                    </label>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <span class="info-label">📜 대학원 여부</span>
+                <div class="chip-group">
+                    <label class="chip selected" onclick="selectGrad(this, false)">
+                        <input type="radio" name="grad_status" value="해당없음" checked>해당없음
+                    </label>
+                    <label class="chip" onclick="selectGrad(this, true)">
+                        <input type="radio" name="grad_status" value="대학원 재학">재학
+                    </label>
+                    <label class="chip" onclick="selectGrad(this, false)">
+                        <input type="radio" name="grad_status" value="석사 졸업">석사졸
+                    </label>
+                    <label class="chip" onclick="selectGrad(this, false)">
+                        <input type="radio" name="grad_status" value="박사 졸업">박사졸
+                    </label>
+                </div>
+                <div id="semester-input-area" class="hidden-input">
+                    <input type="text" id="grad_semester" placeholder="현재 몇 학기차인가요? (예: 2학기)">
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div style="flex: 2;">
+                    <input type="text" id="major" placeholder="전공 (고교생은 계열 입력)">
+                </div>
+                <div style="flex: 1;">
+                    <input type="text" id="grade" placeholder="학년 (예: 3학년)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">
+            희망 직무 (선택) 
+            <span class="badge">Optional</span>
+        </div>
+        <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 12px;">
+            원하는 직무나 산업군이 있다면 입력해주세요. 더 구체적인 자격증/활동 정보를 얻을 수 있습니다.
+        </p>
+        
+        <div class="info-box" style="background-color: white;">
+            <input type="text" id="hope_job" placeholder="예: 마케팅, 반도체 공정설계, 금융권 사무행정 등">
+            <label class="checkbox-label">
+                <input type="checkbox" id="job_undecided" onchange="toggleJobInput(this)">
+                아직 잘 모르겠어요 (AI가 적성을 분석하여 직무 추천)
+            </label>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">최근 1년 간의 주된 활동</div>
+        <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 12px;">가장 많은 시간을 할애한 활동을 선택해주세요.</p>
+        <div class="option-group-vertical">
+            <label class="option-card selected" onclick="selectRest(this, false)">
+                <input type="radio" name="recent_activity" value="학업/취업준비" checked> 📚 학교 공부 또는 취업 준비 (자격증, 어학 등)
+            </label>
+            <label class="option-card" onclick="selectRest(this, false)">
+                <input type="radio" name="recent_activity" value="근로활동"> 💼 아르바이트, 인턴, 직장 생활
+            </label>
+            <label class="option-card" onclick="selectRest(this, true)">
+                <input type="radio" name="recent_activity" value="휴식/재충전"> 🛌 특별한 활동 없이 휴식 및 재충전
+            </label>
+            <label class="option-card" onclick="selectRest(this, false)">
+                <input type="radio" name="recent_activity" value="기타"> 🎸 기타 (군 복무, 여행, 봉사 등)
+            </label>
+        </div>
+        
+        <div id="rest-period-area" class="hidden-input" style="background-color: #FFFBEB; border-color: #FCD34D;">
+            <label style="color: #92400E; font-size: 0.9rem; display: block; margin-bottom: 5px; font-weight: bold;">⏳ 휴식 기간이 대략 얼마나 되나요?</label>
+            <select id="rest_period">
+                <option value="3개월 미만">3개월 미만</option>
+                <option value="3개월~6개월">3개월 ~ 6개월</option>
+                <option value="6개월~1년">6개월 ~ 1년</option>
+                <option value="1년 이상">1년 이상</option>
+            </select>
+            <p style="font-size: 0.8rem; color: #D97706; margin-top: 8px; line-height: 1.4;">
+                * 솔직하게 답변해주시면, 상담사님이 상황에 맞는 정부 지원 제도(국민취업지원제도 등)를 안내해 드릴 수 있습니다.
+            </p>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">현재 진로 준비 단계</div>
+        <div class="option-group-vertical">
+            <label class="option-card" onclick="selectRadio(this)">
+                <input type="radio" name="stage" value="1단계(진로탐색)"> 1단계: 아직 어떤 일을 해야 할지 잘 모르겠어요.
+            </label>
+            <label class="option-card" onclick="selectRadio(this)">
+                <input type="radio" name="stage" value="2단계(스펙준비)"> 2단계: 하고 싶은 건 있는데, 무엇을 준비할지 막막해요.
+            </label>
+            <label class="option-card" onclick="selectRadio(this)">
+                <input type="radio" name="stage" value="3단계(서류작성)"> 3단계: 이력서/자소서를 쓰고 있어요.
+            </label>
+            <label class="option-card" onclick="selectRadio(this)">
+                <input type="radio" name="stage" value="4단계(실전대비)"> 4단계: 면접을 앞두고 있거나 계속 떨어져요.
+            </label>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">선호 기업 및 가치관</div>
+        
+        <div class="info-box" style="margin-bottom: 20px; background-color: #fff;">
+            <span class="info-label">🏢 희망 기업 형태 (중복 가능)</span>
+            <div class="keyword-container">
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="대기업">대기업</label>
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="공공기관">공공기관</label>
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="중견/강소">중견/강소</label>
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="외국계">외국계</label>
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="스타트업">스타트업</label>
+                <label class="keyword-tag" onclick="toggleCheckbox(this)"><input type="checkbox" name="company" value="상관없음">상관없음</label>
+            </div>
+        </div>
+
+        <div class="info-box" style="background-color: #fff;">
+            <span class="info-label">⚖️ 직업 가치관 (더 중요한 쪽 선택)</span>
+            <div class="vs-container">
+                <label class="vs-card" onclick="selectVs(this, 'val1')">💰 높은 연봉<input type="radio" name="val1" value="높은 연봉"></label>
+                <div class="vs-text">VS</div>
+                <label class="vs-card" onclick="selectVs(this, 'val1')">🧘 워라밸<input type="radio" name="val1" value="워라밸"></label>
+            </div>
+            <div class="vs-container" style="margin-bottom: 0;">
+                <label class="vs-card" onclick="selectVs(this, 'val2')">🛡️ 안정성<input type="radio" name="val2" value="직업 안정성"></label>
+                <div class="vs-text">VS</div>
+                <label class="vs-card" onclick="selectVs(this, 'val2')">🚀 성장/커리어<input type="radio" name="val2" value="성장/커리어"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">나의 강점과 경험</div>
+        <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 10px;">나를 가장 잘 나타내는 키워드 3개를 골라주세요.</p>
+        <div class="keyword-container" id="keyword-list" style="margin-bottom: 20px;">
+            <div class="keyword-tag" onclick="selectKeyword(this)">꼼꼼함</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">추진력</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">소통/경청</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">창의/아이디어</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">분석/논리</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">손재주</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">리더십</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">성실/꾸준함</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">도전정신</div>
+            <div class="keyword-tag" onclick="selectKeyword(this)">배려/봉사</div>
+        </div>
+        
+        <div class="info-box" style="background-color: #fff; padding: 0; border: none;">
+            <span class="info-label">📝 대표 경험 한 줄 요약</span>
+            <textarea id="experience" rows="3" placeholder="가장 기억에 남는 경험을 짧게 적어주세요. (예: 동아리 축제 기획 당시 예산 부족 문제를 후원 유치로 해결함)"></textarea>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">취업 자신감 점수</div>
+        <div class="slider-container">
+            <input type="range" id="confidence" min="0" max="100" value="50" oninput="updateSlider(this)">
+            <div class="slider-value"><span id="conf-val">50</span>점</div>
+        </div>
+    </div>
+
+    <button class="submit-btn" onclick="generateAndCopy()">📋 AI 분석결과 생성 (복사하기)</button>
+    <div class="notice">
+        <strong>💡 사용 방법</strong><br>
+        버튼을 누르면 <strong>[상담사 전용 분석 프롬프트]</strong>가 복사됩니다.<br>
+        AI(Gemini, ChatGPT 등) 채팅창에 붙여넣으면 즉시 리포트가 생성됩니다.
+    </div>
+</div>
+
+<script>
+    /* [UI Interaction Logic] */
+    function selectSingle(label, groupName) {
+        const allLabels = document.querySelectorAll(`input[name="${groupName}"]`);
+        allLabels.forEach(input => input.parentElement.classList.remove('selected'));
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+    }
+
+    function selectGrad(label, showInput) {
+        selectSingle(label, 'grad_status');
+        document.getElementById('semester-input-area').style.display = showInput ? 'block' : 'none';
+    }
+
+    function selectRest(label, showInput) {
+        selectSingle(label, 'recent_activity');
+        document.getElementById('rest-period-area').style.display = showInput ? 'block' : 'none';
+    }
+
+    function selectRadio(label) {
+        const groupName = label.querySelector('input').name;
+        const allLabels = document.querySelectorAll(`input[name="${groupName}"]`);
+        allLabels.forEach(input => input.parentElement.parentElement.classList.remove('selected'));
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+    }
+
+    function selectVs(label, name) {
+        const inputs = document.querySelectorAll(`input[name="${name}"]`);
+        inputs.forEach(input => input.parentElement.classList.remove('selected'));
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+    }
+
+    function toggleCheckbox(label) {
+        const checkbox = label.querySelector('input');
+        setTimeout(() => {
+            if(checkbox.checked) label.classList.add('selected');
+            else label.classList.remove('selected');
+        }, 10);
+    }
+
+    function selectKeyword(element) {
+        const selected = document.querySelectorAll('#keyword-list .keyword-tag.selected');
+        if (element.classList.contains('selected')) {
+            element.classList.remove('selected');
+        } else {
+            if (selected.length >= 3) {
+                alert("키워드는 3개까지만 선택 가능합니다.");
+                return;
+            }
+            element.classList.add('selected');
+        }
+    }
+
+    function updateSlider(range) {
+        document.getElementById('conf-val').innerText = range.value;
+    }
+
+    // [New] 직무 미정 체크박스 로직
+    function toggleJobInput(checkbox) {
+        const input = document.getElementById('hope_job');
+        if (checkbox.checked) {
+            input.value = '';
+            input.disabled = true;
+            input.placeholder = "AI가 전공과 경험을 바탕으로 직무를 제안합니다.";
+        } else {
+            input.disabled = false;
+            input.placeholder = "예: 마케팅, 반도체 공정설계, 금융권 사무행정 등";
+        }
+    }
+
+    /* [Prompt Generation Logic] */
+    function generateAndCopy() {
+        const age = document.getElementById('age').value || "미입력";
+        const major = document.getElementById('major').value || "미입력";
+        const grade = document.getElementById('grade').value || "미입력";
+        
+        const hsEl = document.querySelector('input[name="highschool"]:checked');
+        const highschool = hsEl ? hsEl.value : "고교 정보 없음";
+
+        const statusEl = document.querySelector('input[name="academic_status"]:checked');
+        const academicStatus = statusEl ? statusEl.value : "학적 미선택";
+
+        const gradEl = document.querySelector('input[name="grad_status"]:checked');
+        let gradStatus = gradEl ? gradEl.value : "해당없음";
+        if (gradStatus === "대학원 재학") {
+            gradStatus += ` (${document.getElementById('grad_semester').value || "학기 미입력"})`;
+        }
+
+        // [New] 희망 직무 처리 로직
+        const jobInput = document.getElementById('hope_job').value.trim();
+        const jobUndecided = document.getElementById('job_undecided').checked;
+        let hopeJob = "";
+        
+        if (jobUndecided) {
+            hopeJob = "❌ 미정 (내담자의 전공, 가치관, 경험을 분석하여 적합한 직무 2~3가지를 AI가 역으로 추천 및 설득해주세요)";
+        } else {
+            hopeJob = jobInput ? jobInput : "입력 없음 (AI가 전공 기반으로 일반적인 진로 방향성 제시)";
+        }
+
+        const actEl = document.querySelector('input[name="recent_activity"]:checked');
+        let activity = actEl ? actEl.value : "활동 미선택";
+        let restInfo = ""; 
+        
+        if (activity === "휴식/재충전") {
+            const period = document.getElementById('rest_period').value;
+            activity += ` (${period})`;
+            if (period === "6개월~1년" || period === "1년 이상") {
+                restInfo = `⚠️ [주의] ${period} 이상 특별한 활동 없이 쉰 '장기 미취업(쉬었음) 위기' 가능성이 높습니다. 정서적 지지 및 청년도전지원사업/국민취업지원제도 연계가 필요할 수 있습니다.`;
+            } else {
+                restInfo = `ℹ️ [참고] 최근 ${period} 간 휴식기를 가졌습니다. 재충전의 의미를 부여하고 구직 의욕을 고취시켜 주세요.`;
+            }
+        }
+
+        const stageEl = document.querySelector('input[name="stage"]:checked');
+        const stage = stageEl ? stageEl.value : "준비단계 미선택";
+
+        const companies = [];
+        document.querySelectorAll('input[name="company"]:checked').forEach(el => companies.push(el.value));
+        const companyStr = companies.length ? companies.join(", ") : "상관없음";
+
+        const val1 = document.querySelector('input[name="val1"]:checked')?.value || "";
+        const val2 = document.querySelector('input[name="val2"]:checked')?.value || "";
+        const values = [val1, val2].filter(v => v).join(" vs ") || "가치관 미선택";
+
+        const keywords = [];
+        document.querySelectorAll('#keyword-list .keyword-tag.selected').forEach(el => keywords.push(el.innerText));
+        const keywordStr = keywords.join(", ") || "없음";
+
+        const exp = document.getElementById('experience').value || "내용 없음";
+        const conf = document.getElementById('confidence').value;
+
+        // [프롬프트 최적화 & 개선]
+        const promptText = `
+[역할 정의]
+당신은 대학일자리플러스센터 수석 헤드헌터이자 커리어 컨설턴트입니다. 
+제공된 데이터를 바탕으로 **실전 취업 준비를 위한 구체적인 전략**이 담긴 리포트를 작성하세요.
+추상적인 조언보다는 **'채용 공고'에서 실제로 요구하는 스펙과 경험**을 중심으로 분석해야 합니다.
+
+**[필수 지침]**
+1. 만약 당신이 웹 검색이 가능한 AI라면, **최신 채용 트렌드를 검색하여 반영**하세요.
+2. **중요: 결과물에 HTML 태그(<small>, <div>, <span> 등)를 절대 포함하지 마세요.** 오직 텍스트로만 출력하세요.
+3. 개조식(~함, ~임)으로 명확하게 작성하세요.
+4. **추천 정책 및 심리검사에는 반드시 공식 홈페이지로 연결되는 '🔗 [바로가기](URL)' 링크를 생성하세요.**
+
+[내담자 프로필]
+- 인적사항: 만 ${age}세 / 전공(${major}) / 학년(${grade}) / 고교(${highschool}) / 대학(${academicStatus}) / 대학원(${gradStatus})
+- **희망직무: ${hopeJob}**
+- 최근활동: ${activity}
+- 취업준비: ${stage}
+- 희망기업: ${companyStr}
+- 가치관: ${values}
+- 강점키워드: ${keywordStr}
+- 자신감: ${conf}점
+- 대표경험: "${exp}"
+
+[특이사항 가이드]
+${restInfo ? restInfo : "특이사항 없음"}
+
+[출력 양식]
+
+> **📌 핵심 3줄 요약**
+> 1. (상태) [데이터 기반 현재 준비 상태 진단]
+> 2. (가능성) [내담자 스펙과 희망 직무 간의 매칭 가능성 평가]
+> 3. (액션) [지금 당장 시작해야 할 최우선 과제 1가지]
+
+## 1. 📊 내담자 상태 대시보드
+* **🚦 취업 준비 신호등**: (🔴/🟡/🟢 중 선택 및 냉정한 평가)
+* **📈 자신감**: ${conf}점 (■■■■□□□□□□)
+  - ※ 위 수치는 내담자가 직접 입력한 수치입니다.
+  - (이곳에 점수에 대한 AI의 해석이나 주의사항을 한 줄로 덧붙이세요. 특이사항이 없다면 생략 가능)
+* **👤 기본 스펙**: ${major} / ${grade} / 만 ${age}세
+
+## 2. 💡 컨설턴트 정밀 분석
+* [성향/경험 분석]: 경험("${exp}")을 통해 본 직무 적합성 분석
+* [현실적 조언]: 희망 기업(${companyStr}) 입사를 위한 현실적 조언
+
+## 3. 🎯 실전 스펙 가이드 (채용트렌드 기반)
+* **필수/우대 자격증**:
+  - (해당 직무 채용공고에 자주 등장하는 자격증 Top 3 추천, 자격증 명확히 명시)
+* **추천 대외활동/경험**:
+  - (직무 역량을 어필할 수 있는 구체적인 활동 유형, 예: 00공모전, 00서포터즈, 인턴 등)
+  - *Tip: 단순 참여보다는 성과를 낼 수 있는 활동 위주 추천*
+
+## 4. 🗝️ 면접/자소서용 핵심 질문
+1. "경험 재구성": [경험을 직무 역량으로 연결하는 질문]
+2. "약점 방어": [공백기나 낮은 학점 등 약점을 묻는 압박 질문 대비]
+
+## 5. 🚀 단계별 로드맵 (Action Plan)
+* **Step 1 (단기)**: [1~2개월 내 달성 목표]
+* **Step 2 (중기)**: [3~6개월 내 달성 목표]
+* **Step 3 (장기)**: [최종 합격 목표]
+
+## 6. 🏛️ 고용노동부 정책 및 심리검사
+* **추천 심리검사**: 
+  - [검사명] (추천 사유)
+  - 🔗 [워크넷 심리검사 바로가기](https://www.work.go.kr/consltJobCarpa/psychology/psychologyGuidance.do)
+* **정부 지원 제도**: 
+  - **[제도명]**: [활용 방안]
+  - 🔗 [제도 안내/신청 바로가기](URL)
+  * (주의: '국민취업지원제도 1유형/2유형' 구분이 아닌 **'국민취업지원제도'**로 통칭하여 표기하고, 관련 공식 링크(www.kua.go.kr 등)를 반드시 함께 제공하세요.)
+`;
+
+        navigator.clipboard.writeText(promptText).then(() => {
+            alert("✅ 분석 프롬프트가 복사되었습니다!\n\n[Ctrl+V]로 AI 채팅창에 붙여넣으세요.\nAI가 최신 채용 트렌드와 바로가기 링크를 포함하여 답변해줄 것입니다.");
+        }).catch(err => {
+            alert("복사 실패. 수동으로 복사해주세요.");
+        });
+    }
+</script>
+
+</body>
+</html>
