@@ -67,14 +67,13 @@
             content: ''; display: inline-block; width: 6px; height: 20px;
             background-color: var(--primary-color); margin-right: 12px; border-radius: 3px;
         }
-
-        .section-title .badge {
-            background-color: #EFF6FF; color: var(--primary-color);
-            font-size: 0.75rem; padding: 2px 8px; border-radius: 12px;
-            margin-left: 8px; border: 1px solid #BFDBFE; font-weight: 600;
+        
+        .badge-optional {
+            background-color: #EEF2FF; color: var(--primary-color);
+            font-size: 0.8rem; padding: 2px 8px; border-radius: 12px;
+            margin-left: 8px; font-weight: normal; border: 1px solid #BFDBFE;
         }
 
-        /* 인풋 공통 */
         input[type="text"], input[type="number"], textarea, select {
             width: 100%; padding: 12px 16px; border: 1px solid var(--border-color);
             border-radius: 8px; box-sizing: border-box; font-size: 0.95rem;
@@ -86,72 +85,29 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         input:disabled {
-            background-color: #F3F4F6;
-            color: #9CA3AF;
-            cursor: not-allowed;
+            background-color: #F3F4F6; color: #9CA3AF; cursor: not-allowed;
         }
 
-        /* 인적사항 그리드 */
-        .info-grid {
-            display: grid;
-            gap: 15px;
-        }
-        
-        .info-box {
-            background-color: var(--sub-bg);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #E5E7EB;
-        }
+        .info-grid { display: grid; gap: 15px; }
+        .info-box { background-color: var(--sub-bg); padding: 15px; border-radius: 10px; border: 1px solid #E5E7EB; }
+        .info-label { font-size: 0.9rem; font-weight: 700; color: #4B5563; margin-bottom: 10px; display: block; }
+        .input-row { display: flex; gap: 10px; }
 
-        .info-label {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #4B5563;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* 버튼형 선택지 스타일 (공통) */
-        .chip-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
+        .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
         .chip {
-            flex: 1;
-            min-width: 60px;
-            padding: 8px 12px;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            background: white;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 1; min-width: 60px; padding: 8px 12px; font-size: 0.85rem;
+            border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer;
+            text-align: center; background: white; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
-        
         .chip:hover { background-color: #EFF6FF; border-color: #93C5FD; }
         .chip.selected {
-            background-color: #DBEAFE;
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            font-weight: bold;
+            background-color: #DBEAFE; color: var(--primary-color);
+            border-color: var(--primary-color); font-weight: bold;
             box-shadow: 0 1px 2px rgba(37, 99, 235, 0.1);
         }
         .chip input { display: none; }
 
-
-        /* 옵션 카드 (세로형 리스트) */
         .option-group-vertical { display: flex; flex-direction: column; gap: 8px; }
         .option-card {
             display: flex; align-items: center; padding: 12px 16px;
@@ -165,7 +121,6 @@
         }
         .option-card input { margin-right: 10px; accent-color: var(--primary-color); }
 
-        /* VS 섹션 */
         .vs-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .vs-text { font-weight: 900; color: #D1D5DB; margin: 0 10px; font-style: italic; font-size: 1.1rem; }
         .vs-card {
@@ -180,7 +135,6 @@
         }
         .vs-card input { display: none; }
 
-        /* 키워드 태그 */
         .keyword-container { display: flex; flex-wrap: wrap; gap: 8px; }
         .keyword-tag {
             padding: 8px 16px; background-color: #F3F4F6; border-radius: 20px;
@@ -193,12 +147,10 @@
         }
         .keyword-tag input { display: none; }
 
-        /* 슬라이더 */
         .slider-container { text-align: center; padding: 10px 20px; background: var(--sub-bg); border-radius: 10px; }
         input[type=range] { width: 100%; margin: 15px 0; accent-color: var(--primary-color); cursor: pointer; }
         .slider-value { font-weight: 800; color: var(--primary-color); font-size: 1.5rem; }
 
-        /* 버튼 */
         .submit-btn {
             width: 100%; padding: 18px; background-color: var(--primary-color); color: white;
             border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700;
@@ -211,17 +163,14 @@
             font-size: 0.9rem; color: #4B5563; margin-top: 20px; text-align: center;
             background-color: #F0FDF4; border: 1px solid #BBF7D0; padding: 15px; border-radius: 8px;
         }
-
-        /* 숨겨진 입력창 */
         .hidden-input { display: none; margin-top: 10px; padding: 12px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; }
         
-        /* 체크박스 커스텀 */
-        .checkbox-label {
-            display: flex; align-items: center; cursor: pointer; font-size: 0.9rem; color: #4B5563; margin-top: 5px;
+        .toggle-label {
+            display: flex; align-items: center; justify-content: flex-end;
+            font-size: 0.85rem; color: #6B7280; cursor: pointer; margin-bottom: 5px;
         }
-        .checkbox-label input { margin-right: 8px; width: auto; }
+        .toggle-label input { margin-right: 5px; accent-color: var(--primary-color); }
 
-        /* 모바일 반응형 */
         @media (max-width: 500px) {
             .container { padding: 20px; }
             .chip { min-width: 45px; font-size: 0.8rem; padding: 6px 4px; }
@@ -244,6 +193,30 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <input type="number" id="age" placeholder="숫자만 입력 (예: 24)" style="width: 120px; margin-bottom: 10px;">
                     <span style="font-size: 0.9rem; color: #6B7280; margin-bottom: 10px;">세</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <span class="info-label">🎓 최종 학력</span>
+                <div class="chip-group">
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="고등학교 졸업">고등학교
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="전문대 졸업">전문대(재학 포함)
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="4년제 졸업">4년제 대학(재학 포함)
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="석사 졸업">대학원(석사)
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="박사 졸업">대학원(박사)
+                    </label>
+                    <label class="chip" onclick="selectSingle(this, 'final_edu')">
+                        <input type="radio" name="final_edu" value="기타">기타
+                    </label>
                 </div>
             </div>
 
@@ -321,24 +294,36 @@
                     <input type="text" id="grade" placeholder="학년 (예: 3학년)">
                 </div>
             </div>
+            <p style="font-size: 0.8rem; color: #6B7280; margin-top: 5px; margin-bottom: 0;">※ 학부 기준 입력</p>
         </div>
     </div>
 
     <div class="section">
         <div class="section-title">
-            희망 직무 (선택) 
-            <span class="badge">Optional</span>
+            구체적 진로 희망 
+            <span class="badge-optional">선택사항</span>
         </div>
         <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 12px;">
-            원하는 직무나 산업군이 있다면 입력해주세요. 더 구체적인 자격증/활동 정보를 얻을 수 있습니다.
+            구체적인 목표가 있다면 AI가 더 정확한 자격증과 대외활동을 추천해줍니다.<br>
+            아직 정하지 않았다면 체크박스를 눌러주세요.
         </p>
-        
-        <div class="info-box" style="background-color: white;">
-            <input type="text" id="hope_job" placeholder="예: 마케팅, 반도체 공정설계, 금융권 사무행정 등">
-            <label class="checkbox-label">
-                <input type="checkbox" id="job_undecided" onchange="toggleJobInput(this)">
-                아직 잘 모르겠어요 (AI가 적성을 분석하여 직무 추천)
-            </label>
+
+        <div class="info-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="info-label">🎯 구체적 희망 직종/직무</span>
+                <label class="toggle-label">
+                    <input type="checkbox" id="job_undecided" onchange="toggleInput('desired_job', this)"> 아직 정하지 않음
+                </label>
+            </div>
+            <input type="text" id="desired_job" placeholder="예: 마케팅 콘텐츠 기획, 반도체 공정 엔지니어, 병원 코디네이터">
+            
+            <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span class="info-label">💰 희망 연봉 수준 (초임 기준)</span>
+                <label class="toggle-label">
+                    <input type="checkbox" id="income_undecided" onchange="toggleInput('desired_income', this)"> 아직 정하지 않음
+                </label>
+            </div>
+            <input type="text" id="desired_income" placeholder="예: 3,500만원 이상, 월 250만원 수준, 최저시급 등">
         </div>
     </div>
 
@@ -519,16 +504,16 @@
         document.getElementById('conf-val').innerText = range.value;
     }
 
-    // [New] 직무 미정 체크박스 로직
-    function toggleJobInput(checkbox) {
-        const input = document.getElementById('hope_job');
+    // 선택사항 토글 로직
+    function toggleInput(targetId, checkbox) {
+        const input = document.getElementById(targetId);
         if (checkbox.checked) {
-            input.value = '';
+            input.value = "";
             input.disabled = true;
-            input.placeholder = "AI가 전공과 경험을 바탕으로 직무를 제안합니다.";
+            input.placeholder = "아직 정하지 않음";
         } else {
             input.disabled = false;
-            input.placeholder = "예: 마케팅, 반도체 공정설계, 금융권 사무행정 등";
+            input.placeholder = targetId === 'desired_job' ? "예: 마케팅 콘텐츠 기획..." : "예: 3,500만원 이상...";
         }
     }
 
@@ -538,6 +523,10 @@
         const major = document.getElementById('major').value || "미입력";
         const grade = document.getElementById('grade').value || "미입력";
         
+        // [NEW] 최종학력 수집
+        const finalEduEl = document.querySelector('input[name="final_edu"]:checked');
+        const finalEdu = finalEduEl ? finalEduEl.value : "최종학력 미선택";
+
         const hsEl = document.querySelector('input[name="highschool"]:checked');
         const highschool = hsEl ? hsEl.value : "고교 정보 없음";
 
@@ -550,16 +539,12 @@
             gradStatus += ` (${document.getElementById('grad_semester').value || "학기 미입력"})`;
         }
 
-        // [New] 희망 직무 처리 로직
-        const jobInput = document.getElementById('hope_job').value.trim();
+        // 선택사항(직무/소득) 처리
         const jobUndecided = document.getElementById('job_undecided').checked;
-        let hopeJob = "";
+        const incomeUndecided = document.getElementById('income_undecided').checked;
         
-        if (jobUndecided) {
-            hopeJob = "❌ 미정 (내담자의 전공, 가치관, 경험을 분석하여 적합한 직무 2~3가지를 AI가 역으로 추천 및 설득해주세요)";
-        } else {
-            hopeJob = jobInput ? jobInput : "입력 없음 (AI가 전공 기반으로 일반적인 진로 방향성 제시)";
-        }
+        const desiredJob = jobUndecided ? "아직 정하지 않음(탐색 필요)" : (document.getElementById('desired_job').value || "미입력");
+        const desiredIncome = incomeUndecided ? "아직 정하지 않음" : (document.getElementById('desired_income').value || "미입력");
 
         const actEl = document.querySelector('input[name="recent_activity"]:checked');
         let activity = actEl ? actEl.value : "활동 미선택";
@@ -593,22 +578,16 @@
         const exp = document.getElementById('experience').value || "내용 없음";
         const conf = document.getElementById('confidence').value;
 
-        // [프롬프트 최적화 & 개선]
+        // [최종 프롬프트 구성]
         const promptText = `
 [역할 정의]
-당신은 대학일자리플러스센터 수석 헤드헌터이자 커리어 컨설턴트입니다. 
-제공된 데이터를 바탕으로 **실전 취업 준비를 위한 구체적인 전략**이 담긴 리포트를 작성하세요.
-추상적인 조언보다는 **'채용 공고'에서 실제로 요구하는 스펙과 경험**을 중심으로 분석해야 합니다.
+당신은 대학일자리플러스센터 20년 차 수석 컨설턴트입니다. 아래 데이터를 바탕으로 상담 리포트를 작성하세요.
+학술적 이론보다는 **'현실적이고 구체적인 조언'**을 최우선으로 합니다.
 
-**[필수 지침]**
-1. 만약 당신이 웹 검색이 가능한 AI라면, **최신 채용 트렌드를 검색하여 반영**하세요.
-2. **중요: 결과물에 HTML 태그(<small>, <div>, <span> 등)를 절대 포함하지 마세요.** 오직 텍스트로만 출력하세요.
-3. 개조식(~함, ~임)으로 명확하게 작성하세요.
-4. **추천 정책 및 심리검사에는 반드시 공식 홈페이지로 연결되는 '🔗 [바로가기](URL)' 링크를 생성하세요.**
-
-[내담자 프로필]
-- 인적사항: 만 ${age}세 / 전공(${major}) / 학년(${grade}) / 고교(${highschool}) / 대학(${academicStatus}) / 대학원(${gradStatus})
-- **희망직무: ${hopeJob}**
+[상담 데이터]
+- 인적사항: 만 ${age}세 / 최종학력(${finalEdu}) / 전공(${major}) / 학년(${grade}) / 고교(${highschool}) / 대학(${academicStatus}) / 대학원(${gradStatus})
+- 희망직무: ${desiredJob}
+- 희망연봉: ${desiredIncome}
 - 최근활동: ${activity}
 - 취업준비: ${stage}
 - 희망기업: ${companyStr}
@@ -617,55 +596,77 @@
 - 자신감: ${conf}점
 - 대표경험: "${exp}"
 
-[특이사항 가이드]
-${restInfo ? restInfo : "특이사항 없음"}
+[작성 지침 및 요청사항]
+1. **최신 채용 정보 반영**: 당신이 웹 브라우징 기능이 있다면, 최신 채용 공고나 트렌드를 검색하여 반영해주세요. 기능이 없다면 가장 최근의 데이터를 기반으로 가장 확률 높은 조언을 해주세요.
+2. **현실적 검증(Reality Check)**: 내담자의 [희망연봉]과 [희망직무]가 현실적으로 매칭되는지 판단하고, 조정이 필요하다면 업계 평균을 언급하며 부드럽게 조언해주세요.
+3. **구체적 스펙 제안**: 단순히 "자격증 따세요"가 아니라, 직무에 꼭 필요한 자격증 명칭(예: ADsP, 컴활1급 등)과 도움이 될만한 구체적인 대외활동 유형을 명시해주세요.
+4. **HTML 태그 사용 금지**: 결과물에 <small>, <span>, <div> 등 **HTML 태그를 절대 사용하지 마세요.** 오직 텍스트와 마크다운 문법만 사용하세요.
+5. **정책 명칭 및 링크 준수**: 
+   - '국민취업지원제도' 추천 시, **1유형/2유형을 구분하지 않고 '국민취업지원제도'로 명칭을 통일**하세요.
+   - 모든 추천 사이트 및 정책은 반드시 **[바로가기](URL)** 형식을 사용하여 링크가 생성되도록 하세요.
 
 [출력 양식]
 
 > **📌 핵심 3줄 요약**
-> 1. (상태) [데이터 기반 현재 준비 상태 진단]
-> 2. (가능성) [내담자 스펙과 희망 직무 간의 매칭 가능성 평가]
-> 3. (액션) [지금 당장 시작해야 할 최우선 과제 1가지]
+> 1. (진단) [데이터 기반 현재 상태 진단]
+> 2. (강점) [핵심 강점 및 직무 적합성]
+> 3. (전략) [향후 방향성 한 줄 요약]
 
 ## 1. 📊 내담자 상태 대시보드
-* **🚦 취업 준비 신호등**: (🔴/🟡/🟢 중 선택 및 냉정한 평가)
+* **🚦 취업 준비 신호등**: (🔴/🟡/🟢 중 선택 및 이유 기술)
 * **📈 자신감**: ${conf}점 (■■■■□□□□□□)
-  - ※ 위 수치는 내담자가 직접 입력한 수치입니다.
-  - (이곳에 점수에 대한 AI의 해석이나 주의사항을 한 줄로 덧붙이세요. 특이사항이 없다면 생략 가능)
-* **👤 기본 스펙**: ${major} / ${grade} / 만 ${age}세
+  *(※ 위 수치는 내담자가 직접 입력한 수치입니다)*
+  - **🧠 AI 해석**: [점수에 대한 심층 해석 및 조언]
+* **👤 스펙 요약**: ${major} / ${grade} / 만 ${age}세 / ${finalEdu}
 
-## 2. 💡 컨설턴트 정밀 분석
-* [성향/경험 분석]: 경험("${exp}")을 통해 본 직무 적합성 분석
-* [현실적 조언]: 희망 기업(${companyStr}) 입사를 위한 현실적 조언
+## 2. 💡 컨설턴트 분석
+* [내담자의 잠재력 분석 및 공백기 프레이밍]
+* [강점 키워드와 추천 직무 연결 분석 (직무 미정 시 유망 직무 추천)]
 
-## 3. 🎯 실전 스펙 가이드 (채용트렌드 기반)
-* **필수/우대 자격증**:
-  - (해당 직무 채용공고에 자주 등장하는 자격증 Top 3 추천, 자격증 명확히 명시)
-* **추천 대외활동/경험**:
-  - (직무 역량을 어필할 수 있는 구체적인 활동 유형, 예: 00공모전, 00서포터즈, 인턴 등)
-  - *Tip: 단순 참여보다는 성과를 낼 수 있는 활동 위주 추천*
+## 3. 🗝️ 핵심 질문 Top 2
+1. "경험 재구성 질문": [질문 내용]
+2. "가치관 심층 질문": [질문 내용]
 
-## 4. 🗝️ 면접/자소서용 핵심 질문
-1. "경험 재구성": [경험을 직무 역량으로 연결하는 질문]
-2. "약점 방어": [공백기나 낮은 학점 등 약점을 묻는 압박 질문 대비]
+## 4. 📋 맞춤형 상담 로드맵
+* **목표 설정**: [희망 직무/기업] 달성을 위한 현실적 목표
+* **단계별 전략**: (도입 - 전개 - 마무리 단계별 상담 계획)
 
-## 5. 🚀 단계별 로드맵 (Action Plan)
-* **Step 1 (단기)**: [1~2개월 내 달성 목표]
-* **Step 2 (중기)**: [3~6개월 내 달성 목표]
-* **Step 3 (장기)**: [최종 합격 목표]
+---
 
-## 6. 🏛️ 고용노동부 정책 및 심리검사
-* **추천 심리검사**: 
-  - [검사명] (추천 사유)
-  - 🔗 [워크넷 심리검사 바로가기](https://www.work.go.kr/consltJobCarpa/psychology/psychologyGuidance.do)
-* **정부 지원 제도**: 
-  - **[제도명]**: [활용 방안]
-  - 🔗 [제도 안내/신청 바로가기](URL)
-  * (주의: '국민취업지원제도 1유형/2유형' 구분이 아닌 **'국민취업지원제도'**로 통칭하여 표기하고, 관련 공식 링크(www.kua.go.kr 등)를 반드시 함께 제공하세요.)
+## 5. 🏛️ 고용노동부 정책 및 심리검사
+*(※ 아래 모든 항목에 반드시 [바로가기](URL) 형식을 포함하여 작성)*
+
+### A. 🩺 추천 심리검사
+* **추천 검사**: [워크넷 심리검사 명 (예: 직업선호도검사 L형)]
+  - 💡 이유: [추천 사유]
+  - 🔗 [워크넷 심리검사 바로가기](https://www.work24.go.kr/wk/r/c/1000/jobPsyExamList.do)
+
+### B. 🇰🇷 정부 지원 제도 & 교육
+* **제도/교육 1**: [제도명 (예: 국민취업지원제도/내일배움카드 등)]
+  - 💡 활용: [활용 방안]
+  - 🔗 [바로가기](https://www.work24.go.kr/)
+
+* **제도/교육 2**: [제도명 (예: 청년도전지원사업/K-디지털 트레이닝 등)]
+  - 💡 활용: [활용 방안]
+  - 🔗 [바로가기](https://www.work24.go.kr/)
+
+## 6. 🎯 [중요] 실전 취업 스펙 및 활동 추천
+*(※ 최신 채용 트렌드를 반영하여 현실적인 조언을 해주세요)*
+
+### A. 💳 필수/우대 자격증 (Top 3)
+* **1순위**: [자격증명] - (추천 사유 및 난이도)
+* **2순위**: [자격증명] - (추천 사유)
+* **3순위**: [자격증명] - (추천 사유)
+
+### B. 🏃 추천 대외활동 및 경험
+* **직무 경험**: (인턴, 현장실습 등 구체적 유형 추천)
+* **역량 강화**: (공모전, 서포터즈, 프로젝트 등 추천)
+* **조언**: 내담자의 희망 연봉(${desiredIncome}) 달성을 위해 추가로 보완해야 할 점(어학 점수 등)
+
 `;
 
         navigator.clipboard.writeText(promptText).then(() => {
-            alert("✅ 분석 프롬프트가 복사되었습니다!\n\n[Ctrl+V]로 AI 채팅창에 붙여넣으세요.\nAI가 최신 채용 트렌드와 바로가기 링크를 포함하여 답변해줄 것입니다.");
+            alert("✅ 분석 프롬프트가 복사되었습니다!\n\n[Ctrl+V]로 AI 채팅창(Gemini, GPT 등)에 붙여넣으세요.\nAI가 최신 트렌드를 반영하여 자격증과 활동을 추천해줍니다.");
         }).catch(err => {
             alert("복사 실패. 수동으로 복사해주세요.");
         });
